@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+REPOS=(
+https://github.com/BioBoost/embedded_systems_course
+https://github.com/BioBoost/embedded_systems_tools_and_scripts
+)
+
+
+for i in "${REPOS[@]}"
+do
+	echo "Proccessing $i ...."
+	substring=$(echo $i | cut -d'/' -f 5)
+	if [ -e $substring ]; then
+		echo "Directory exsists, pulling newest version..."
+		cd $substring
+		git pull $i
+		cd ..
+	else
+		echo "Downloading in new directory..."
+		git clone $i
+	fi
+	echo "Done!"
+done
+
