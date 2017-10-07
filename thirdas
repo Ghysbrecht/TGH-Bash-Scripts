@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+echo "What is the IP of the target?"
+read ip_address
+echo "What is the username? [Default: pi]"
+read username
+
+if [ -z "$username" ]; then
+  username="pi"
+fi
+
+if [ ! -f ~/.ssh/id_rsa.pub ]; then
+  echo "No current key found, generating...."
+  ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa -q
+  ssh-add
+fi
+
+echo "Sending public key to target device..."
+echo "If asked type \"yes\" and enter the target device's password"
+cat ~/.ssh/id_rsa.pub | ssh $username@$ip_address "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
+echo "Done!"
