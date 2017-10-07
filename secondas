@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+echo "What folder do you want to send?"
+echo "-------------------------------------------"
+ls -d */
+echo "-------------------------------------------"
+read fromfolder
+echo "What is the IP of the target?"
+read ip_address
+echo "What is the username? [Default: pi]"
+read username
+echo "What is the destination folder? [Default: ~/fromvmfolder]"
+read  folder
+
+if [ -z "$folder" ]; then
+  folder="~/fromvmfolder"
+fi
+if [ -z "$username" ]; then
+  username="pi"
+fi
+
+scp -r $fromfolder $username@$ip_address:$folder
